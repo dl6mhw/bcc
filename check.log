@@ -1,0 +1,19 @@
+<pre>
+
+Check: DL6MHW
+Step 0 = Punkte nach neuer BCC-Liste neu setzen
+Step Pre 1: Dupes vor Check und Raw
+Step pre 1 = Dupes vor Check DL6MHW
+Raw berechnen
+Raw DL6MHW: update t_entry set r_qso=71, r_punkte=131, r_mult=15, r_score=1965 where id=8
+
+Check: DL6MHW
+Step 1 = Direkte Treffer
+select q1.qid, q1.nr2, q2.nr1, q1.call2, q2.qid from t_qso q1, t_qso q2 where q1.status='-' and q2.status='-' and q1.call1='DL6MHW' and q2.call2='DL6MHW' and q1.call2=q2.call1 and q1.txmode=q2.txmode and  abs(timestampdiff(minute,q1.zeit,q2.zeit))<6
+Step 2 = Call Hörfehler:
+Step vor3 = unchecked für vorhandene Logs Call Hörfehler
+select qid, call2 from t_qso where call1='DL6MHW' and status='-' and call2 in (select callsign from t_entry)
+Step 3 = Dupes DL6MHW
+Step 4 = Ergebnis berechnen
+RES: DL6MHW	71	71	 15*131 = 1965 	15*131 = 1965
+update t_entry set f_qso=71, f_mult=15, f_punkte=131, f_score=1965, dupe=0, call_error=0 , xchg_error=0, nil=0 where id=8
